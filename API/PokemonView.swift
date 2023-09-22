@@ -14,7 +14,7 @@ struct Pokemon: Codable, Identifiable {
     var image: String?
 }
 
-struct PokemonView2: View {
+struct PokemonView: View {
     @ObservedObject var viewModel = PokemonViewModel()
     
 

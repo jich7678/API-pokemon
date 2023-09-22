@@ -20,10 +20,6 @@ struct ContentView: View {
                     .tabItem {
                         Label("Pokedex", systemImage:"list.bullet")
                     }
-                PikachuView()
-                    .tabItem {
-                        Label("Pikachu", systemImage:"lanyardcard")
-                    }
             }
         }
     }
