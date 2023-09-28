@@ -7,48 +7,72 @@
 
 import SwiftUI
 
-struct Pikachu: Codable, Identifiable {
+struct PokemonDetail: Codable, Identifiable {
     var id: String
     var localId: String?
     var name: String
     var rarity: String
     var hp: Int
+    var image: String
 }
 
-struct PikachuView: View {
-    @State var poke = [Pikachu]()
+struct PokemonDetailView: View {
+    @State var pokeID = String()
+    @State var poke = [PokemonDetail]()
     
-    func getPikachu() async -> () {
+    func getPoke(withString input: String) async -> () {
         do {
-            let url = URL(string: "https://api.tcgdex.net/v2/en/cards/basep-1")!
+            let url = URL(string: input)!
             let (data, _) = try await URLSession.shared.data(from: url)
             print(data)
-            let pokemon = try JSONDecoder().decode(Pikachu.self, from:data)
+            let pokemon = try JSONDecoder().decode(PokemonDetail.self, from:data)
             poke.append(pokemon)
         }   catch {
             print("Error: \(error.localizedDescription)")
         }
     }
+    
+    func checkEmpty(withString picture: String) -> (Bool) {
+        var isEmpty = true
+        if (picture.contains("http")) {
+            isEmpty = false
+        }
+        return(isEmpty)
+    }
+    
     var body: some View {
         NavigationView {
-            VStack {
-                Image("pikachu")
-                List(poke) { pikachu in
-                     VStack(alignment: .leading) {
-                         Text("Name: \(pikachu.name)")
-                         Text("ID: \(pikachu.id)")
-                         Text("Rarity: \(pikachu.rarity)")
-                         Text("HP: \(pikachu.hp)")
-                     }
-                 }
-            } .navigationTitle("Pikachu")
+            VStack{
+                List(poke) { pokemon in
+                    VStack(alignment: .leading) {
+                            let _ = print(pokemon.image)
+                            AsyncImage(url: URL(string: "\(String(describing: pokemon.image))/high.webp")) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width:330,height:400)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            Divider()
+                            
+                            //let _ = print(pokemon.image) debug
+                            Text("Name: \(pokemon.name)")
+                            Text("ID: \(pokemon.id)")
+                            Text("Rarity: \(pokemon.rarity)")
+                            Text("HP: \(pokemon.hp)")
+                        
+                    }.navigationTitle("\(pokemon.name)")
+                }
+            }
         }.task {
-            await getPikachu()
+            let input = "https://api.tcgdex.net/v2/en/cards/" + pokeID
+            await getPoke(withString: input )
         }
     }
+    
+    #Preview {
+        ContentView()
+    }
+    
 }
-
-#Preview {
-    ContentView()
-}
-
