@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-struct PokemonDetail: Codable, Identifiable {
-    var id: String
-    var localId: String?
-    var name: String
-    var rarity: String
-    var hp: Int
-    var image: String
-}
-
 struct PokemonDetailView: View {
     @State var pokeID = String()
     @State var poke = [PokemonDetail]()
@@ -45,14 +36,20 @@ struct PokemonDetailView: View {
             VStack{
                 List(poke) { pokemon in
                     VStack(alignment: .leading) {
-                            let _ = print(pokemon.image)
-                            AsyncImage(url: URL(string: "\(String(describing: pokemon.image))/high.webp")) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width:330,height:400)
-                            } placeholder: {
-                                ProgressView()
+                            AsyncImage(url: URL(string: "\(String(describing: pokemon.image))/high.webp")) { phase in
+                                if let image = phase.image {
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width:330,height:400)
+                                } else if phase.error != nil {
+                                   Image(systemName: "icloud.and.arrow.down.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width:330,height:400)
+                                } else {
+                                    ProgressView()
+                                }
                             }
                             Divider()
                             
