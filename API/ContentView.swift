@@ -16,6 +16,10 @@ struct ContentView: View {
                     .tabItem {
                         Label("Home", systemImage:"house")
                     }
+                MapPageView()
+                    .tabItem {
+                        Label("Map", systemImage:"map")
+                    }
                 PokemonView()
                     .tabItem {
                         Label("Pokedex", systemImage:"list.bullet")

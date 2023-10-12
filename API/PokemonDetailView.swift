@@ -23,14 +23,6 @@ struct PokemonDetailView: View {
         }
     }
     
-    func checkEmpty(withString picture: String) -> (Bool) {
-        var isEmpty = true
-        if (picture.contains("http")) {
-            isEmpty = false
-        }
-        return(isEmpty)
-    }
-    
     var body: some View {
         NavigationView {
             VStack{

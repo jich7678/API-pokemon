@@ -10,7 +10,7 @@ import SwiftUI
 struct PokemonView: View {
     @ObservedObject var viewModel = PokemonViewModel()
     @State private var inputID = ""
-
+    
     var body: some View {
         
         NavigationView {
@@ -29,6 +29,9 @@ struct PokemonView: View {
             }
             .navigationTitle("Pokedex")
             .searchable(text: $inputID, prompt: "Enter Pokemon Name")
+        
+        //let _ = print(viewModel.pokedex.count) figure out how many total pokemon I have in the list 15986
+        
         }
     var searchResults: [Pokemon] {
             if inputID.isEmpty {
